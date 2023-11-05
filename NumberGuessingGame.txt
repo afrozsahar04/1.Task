@@ -1,0 +1,70 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+public class NumberGuessingGame extends JFrame implements ActionListener {
+    private int targetNumber;
+    private JTextField guessField;
+    private JLabel feedbackLabel;
+
+    public NumberGuessingGame() {
+        Random random = new Random();
+        targetNumber = random.nextInt(100) + 1; // Generate a random number between 1 and 100
+
+        setTitle("Number Guessing Game");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 200);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 1));
+
+        JLabel instructionLabel = new JLabel("Guess the number (1-100):");
+        instructionLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20)); // Set a playful font
+        panel.add(instructionLabel);
+
+        guessField = new JTextField();
+        guessField.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); // Set a playful font
+        panel.add(guessField);
+
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(this);
+        submitButton.setFont(new Font("Comic Sans MS", Font.BOLD, 20)); // Set a playful font
+        panel.add(submitButton);
+
+        feedbackLabel = new JLabel("");
+        feedbackLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 20)); // Set a playful font
+        panel.add(feedbackLabel);
+
+        panel.setBackground(new Color(255, 230, 153)); // Set a colorful background
+
+        add(panel);
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            int guess = Integer.parseInt(guessField.getText());
+            if (guess < 1 || guess > 100) {
+                feedbackLabel.setText("Please enter a number between 1 and 100.");
+            } else {
+                if (guess == targetNumber) {
+                    feedbackLabel.setText("Congratulations! You've guessed the number.");
+                } else if (guess < targetNumber) {
+                    feedbackLabel.setText("Too low. Try again.");
+                } else {
+                    feedbackLabel.setText("Too high. Try again.");
+                }
+            }
+        } catch (NumberFormatException ex) {
+            feedbackLabel.setText("Please enter a valid number.");
+        }
+        guessField.setText("");
+    }
+
+    public static void main(String[] args) {
+        new NumberGuessingGame();
+    }
+}
